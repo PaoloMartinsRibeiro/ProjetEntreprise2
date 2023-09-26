@@ -41,8 +41,36 @@ router.get('/GetAllSalaries', (req, res) => {
     });
 });
 
+router.get('/GetAllServices', (req, res) => {
+    const sql = 'Select * FROM services';
+    db.query(sql, (err, result) => {
+        if (err) {
+            console.error('Erreur lors de la récupération des services :', err);
+            res.status(500).send({ error: 'Une erreur s\'est produite lors de la récupération des services.' });
+        } else {
+            res.send(result);
+        }
+    });
+})
+
+router.get('/GetAllSites', (req, res) => {
+    const sql = 'Select * FROM sites';
+    db.query(sql, (err, result) => {
+        if (err) {
+            console.error('Erreur lors de la récupération des sites :', err);
+            res.status(500).send({ error: 'Une erreur s\'est produite lors de la récupération des sites.' });
+        } else {
+            res.send(result);
+        }
+    });
+})
+
+
+
 app.get('*', router)
 app.post('*', router)
+app.put('*', router)
+app.delete('*', router)
 
 app.listen(8081, () => {
     console.log('Listening on port 8081')

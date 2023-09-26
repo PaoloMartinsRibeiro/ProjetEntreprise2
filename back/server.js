@@ -20,11 +20,11 @@ router.post('/login', (req, res) => {
         req.body.password
     ]
     db.query(sql, [ req.body.username, req.body.password], (err, data) => {
-        if (err) return res.json("Error")
+        if (err) return res.send("Error")
         if(data.length > 0) {
-            res.json("Login success")
+            res.send("Login success")
         } else {
-            res.json("Login failed")
+            res.send("Login failed")
         }
     })
 })
@@ -34,15 +34,15 @@ router.get('/GetAllSalaries', (req, res) => {
     db.query(sql, (err, result) => {
         if (err) {
             console.error('Erreur lors de la récupération des employés :', err);
-            res.status(500).json({ error: 'Une erreur s\'est produite lors de la récupération des employés.' });
+            res.status(500).send({ error: 'Une erreur s\'est produite lors de la récupération des employés.' });
         } else {
-            res.json(result);
+            res.send(result);
         }
     });
 });
 
-
-
+app.get('*', router)
+app.post('*', router)
 
 app.listen(8081, () => {
     console.log('Listening on port 8081')

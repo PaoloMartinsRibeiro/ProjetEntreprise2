@@ -12,6 +12,7 @@ function Login() {
         axios.post('http://localhost:8081/login', {username, password})
         .then(res => {console.log(res)
             if(res.data === "Login success") {
+                window.location.href = "/Home"
             }
         })
         .catch(err => {console.log(err)})

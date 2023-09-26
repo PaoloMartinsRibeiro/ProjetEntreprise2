@@ -9,7 +9,7 @@ app.use(cors())
 const db = mysql.createConnection ({
     host: "localhost",
     user: "root",
-    password: "",
+    password: "password",
     database: "projetcesi"
 })
 
@@ -33,6 +33,7 @@ router.get('/GetAllSalaries', (req, res) => {
     const sql = 'SELECT * FROM salarie';
     db.query(sql, (err, result) => {
         if (err) {
+            console.log(err)
             console.error('Erreur lors de la récupération des employés :', err);
             res.status(500).send({ error: 'Une erreur s\'est produite lors de la récupération des employés.' });
         } else {
@@ -42,7 +43,7 @@ router.get('/GetAllSalaries', (req, res) => {
 });
 
 router.get('/GetAllServices', (req, res) => {
-    const sql = 'Select * FROM services';
+    const sql = 'Select * FROM service';
     db.query(sql, (err, result) => {
         if (err) {
             console.error('Erreur lors de la récupération des services :', err);
@@ -54,7 +55,7 @@ router.get('/GetAllServices', (req, res) => {
 })
 
 router.get('/GetAllSites', (req, res) => {
-    const sql = 'Select * FROM sites';
+    const sql = 'Select * FROM site';
     db.query(sql, (err, result) => {
         if (err) {
             console.error('Erreur lors de la récupération des sites :', err);

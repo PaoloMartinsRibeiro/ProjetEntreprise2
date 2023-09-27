@@ -1,20 +1,18 @@
 import react, { useState } from "react"
 import '../Login/Login.css'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom';
 
 
 function Login() {
     const [username, setUsername] = useState('')
     const [password, setpassword] = useState('')
-    const navigate = useNavigate();
 
     function handleSubmit(event) {
         event.preventDefault()
         axios.post('http://localhost:8081/login', {username, password})
         .then(res => {console.log(res)
             if(res.data === "Login success") {
-                navigate('/GetAllSalarie')
+                window.location.href = "/Home"
             }
         })
         .catch(err => {console.log(err)})

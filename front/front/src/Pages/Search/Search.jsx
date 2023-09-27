@@ -34,7 +34,7 @@ function Search() {
                 <form onSubmit={handleSubmit}>
                     <div className="form_search">
                         <label htmlFor="nom">Recherche par nom</label>
-                        <input type="name" placeholder="Entrez un nom" onChange={e => setname(e.target.value)}/>
+                        <input type="name" placeholder="nom" onChange={e => setname(e.target.value)}/>
                     </div>
                     <button className="form_button">Effectuer la recherche</button>
                 </form>

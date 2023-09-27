@@ -31,8 +31,8 @@ router.post('/login', (req, res) => {
 
 router.post('/SearchByName', (req, res) => {
     const sql = 'SELECT * FROM salarie WHERE nomSalarie LIKE ? OR prenomSalarie LIKE ?';
-    const searchTerm = `%${req.body.nom}%`; // Modifiez req.body.nom en fonction du nom du champ dans votre formulaire
-    db.query(sql, [searchTerm, searchTerm], (err, data) => {
+    const searchTerm = `%${req.body.nom}%`;
+    db.query(sql, [searchTerm], (err, data) => {
         if (err) {
             console.error(err);
             return res.status(500).send("Erreur de recherche");
@@ -44,6 +44,8 @@ router.post('/SearchByName', (req, res) => {
         }
     });
 });
+
+
 router.get('/GetAllSalaries', (req, res) => {
     const sql = 'SELECT * FROM salarie';
     db.query(sql, (err, result) => {

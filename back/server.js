@@ -31,19 +31,40 @@ router.post('/login', (req, res) => {
 
 router.post('/SearchByName', (req, res) => {
     const sql = 'SELECT * FROM salarie WHERE nomSalarie LIKE ? OR prenomSalarie LIKE ?';
-    const searchTerm = `%${req.body.nom}%`;
-    db.query(sql, [searchTerm], (err, data) => {
+    const searchTerm = `%${req.body.name}%`;
+    db.query(sql, [searchTerm, searchTerm], (err, data) => {
         if (err) {
             console.error(err);
-            return res.status(500).send("Erreur de recherche");
+            return res.status(500).json({ error: "Erreur de recherche" }); 
         }
-        if (data.length > 0) {
-            res.send("Recherche réussie");
-        } else {
-            res.send("Aucun résultat trouvé");
-        }
+        res.json(data); 
     });
 });
+
+router.post('/SearchByService', (req, res) => {
+    const sql = 'SELECT * FROM salarie WHERE serviceSalarie = ?';
+    const selectedService = req.body.selectedService; 
+    db.query(sql, [selectedService], (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Erreur de recherche" }); 
+        }
+        res.json(data); 
+    });
+});
+
+router.post('/SearchBySite', (req, res) => {
+    const sql = 'SELECT * FROM salarie WHERE siteSalarie = ?';
+    const selectedSite = req.body.selectedSite; 
+    db.query(sql, [selectedSite], (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Erreur de recherche" }); 
+        }
+        res.json(data); 
+    });
+});
+
 
 
 router.get('/GetAllSalaries', (req, res) => {
@@ -82,8 +103,6 @@ router.get('/GetAllSites', (req, res) => {
         }
     });
 })
-
-
 
 app.get('*', router)
 app.post('*', router)

@@ -15,10 +15,6 @@ const db = mysql.createConnection ({
 
 router.post('/login', (req, res) => {
     const sql = 'SELECT * FROM utilisateur WHERE name = ? AND password = ?'
-    const values = [
-        req.body.username,
-        req.body.password
-    ]
     db.query(sql, [ req.body.username, req.body.password], (err, data) => {
         if (err) return res.send("Error")
         if(data.length > 0) {
@@ -103,6 +99,36 @@ router.get('/GetAllSites', (req, res) => {
         }
     });
 })
+
+router.put("/UpdateSite/:id", (req, res) => {
+    const siteId = req.params.idSite;
+    const updatedVille = req.body.villeSite;
+    const sql = "UPDATE site SET villeSite = ? WHERE idSite = ?";
+    db.query(sql, [updatedVille, siteId], (err, result) => {
+      if (err) {
+        console.error("Erreur lors de la mise à jour de la ville : ", err);
+        return res.status(500).json({ error: "Erreur lors de la mise à jour de la ville" });
+      }
+      console.log("Site mis à jour avec succès");
+      return res.json({ message: "Site mis à jour avec succès" });
+    });
+  });
+  
+
+router.delete("/DeleteSite/:id", (req, res) => {
+    const siteId = req.params.id;
+    const sql = "DELETE FROM site WHERE idSite = ?";
+    console.log(req.params.idSite);
+    db.query(sql, [siteId], (err, result) => {
+      if (err) {
+        console.error("Erreur lors de la suppression du site : ", err);
+        return res.status(500).json({ error: "Erreur lors de la suppression du site" });
+      }
+      console.log("Site supprimé avec succès");
+      return res.json({ message: "Site supprimé avec succès" });
+    });
+});
+
 
 app.get('*', router)
 app.post('*', router)

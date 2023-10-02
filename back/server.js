@@ -129,6 +129,46 @@ router.delete("/DeleteSite/:id", (req, res) => {
     });
 });
 
+router.post("/CreateService", (req, res) => {
+    const sql = "INSERT INTO service (idService, libelleService) VALUES (?,?)";
+    const idService = req.body.idService;
+    const newService = req.body.libelleService;
+    db.query(sql, [idService, newService], (err, result) => {
+      if (err) {
+        console.error("Erreur lors de la création du service : ", err);
+        return res.status(500).json({ error: "Erreur lors de la création du service" });
+      }
+      console.log("Service créé avec succès");
+      return res.json({ message: "Service créé avec succès" });
+    });
+  }
+);
+
+router.delete("/DeleteService/:id", (req, res) => {
+    const serviceId = req.params.id;
+    const sql = "DELETE FROM service WHERE idService = ?";
+    db.query(sql, [serviceId], (err, result) => {
+      if (err) {
+        console.error("Erreur lors de la suppression du service : ", err);
+        return res.status(500).json({ error: "Erreur lors de la suppression du service" });
+      }
+      return res.json({ message: "Service supprimé avec succès" });
+    });
+  });
+
+router.put("/UpdateService/:id", (req, res) => {
+    const serviceId = req.params.id;
+    const updatedService = req.body.updatedService;
+    const sql = "UPDATE service SET libelleService = ? WHERE idService = ?";
+    db.query(sql, [updatedService, serviceId], (err, result) => {
+      if (err) {
+        console.error("Erreur lors de la mise à jour du service : ", err);
+        return res.status(500).json({ error: "Erreur lors de la mise à jour du service" });
+      }
+      console.log("Service mis à jour avec succès");
+      return res.json({ message: "Service mis à jour avec succès" });
+    });
+  });
 
 app.get('*', router)
 app.post('*', router)

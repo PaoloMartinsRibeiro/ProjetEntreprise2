@@ -1,8 +1,19 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import "./Salaries.css";
 
 function Salaries() {
   const [salaries, setSalaries] = useState([]);
+
+  const [idSalarie, setIdSalarie] = useState();
+  const [nomSalarie, setNomSalarie] = useState("");
+  const [prenomSalarie, setPrenomSalarie] = useState("");
+  const [telephonefixeSalarie, setTelephonefixeSalarie] = useState();
+  const [telephoneportableSalarie, setTelephoneportableSalarie] = useState();
+  const [emailSalarie, setEmailSalarie] = useState("");
+  const [serviceSalarie, setServiceSalarie] = useState();
+  const [siteSalarie, setSiteSalarie] = useState();
+  const [showInsertForm, setShowInsertForm] = useState(false);
 
   useEffect(() => {
     axios.get("http://localhost:8081/GetAllSalaries", {
@@ -19,11 +30,50 @@ function Salaries() {
       });
   }, []);
 
+  const handleForm = () => {
+    setShowInsertForm(true);
+  }
+  const newSalarie = {
+    idSalarie: idSalarie,
+    nomSalarie: nomSalarie,
+    prenomSalarie: prenomSalarie,
+    telephonefixeSalarie: telephonefixeSalarie,
+    telephoneportableSalarie: telephoneportableSalarie,
+    emailSalarie: emailSalarie,
+    serviceSalarie: serviceSalarie,
+    siteSalarie: siteSalarie
+  };
+
+  const handleInsertSalaries = (event) => {
+    event.preventDefault();
+    axios.post("http://localhost:8081/CreateSalarie", newSalarie)
+      .then((response) => {
+        console.log("Salarié ajouté avec succès !");
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.error("Une erreur s'est produite lors de l'ajout du salarié : ", error);
+      });
+  };
+
+  const handleDeleteSalaries = (id) => {
+    axios.delete(`http://localhost:8081/DeleteSalarie/${id}`)
+      .then((response) => {
+        console.log("Salarié supprimé avec succès !");
+        setSalaries(salaries.filter(salarie => salarie.id !== id));
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.error("Une erreur s'est produite lors de la suppression du salarié : ", error);
+      });
+  };
+
   return (
-    <div>
+    <div className="container_salarie_div">
       <table>
         <thead>
           <tr>
+            <th>ID</th>
             <th>Nom</th>
             <th>Prénom</th>
             <th>Téléphone fixe</th>
@@ -36,6 +86,7 @@ function Salaries() {
         <tbody>
           {salaries.map((salary) => (
             <tr key={salary.id}>
+              <td>{salary.idSalarie}</td>
               <td>{salary.nomSalarie}</td>
               <td>{salary.prenomSalarie}</td>
               <td>{salary.telephonefixeSalarie}</td>
@@ -43,10 +94,84 @@ function Salaries() {
               <td>{salary.emailSalarie}</td>
               <td>{salary.serviceSalarie}</td>
               <td>{salary.siteSalarie}</td>
+              <td><button onClick={handleForm}>Ajouter</button></td>
+              <td><button onClick={() => handleDeleteSalaries(salary.idSalarie)}>Suprrimer</button></td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      {showInsertForm && (
+        <div>
+          <h2>Ajouter un nouveau salarie</h2>
+          <label>
+            ID du salarie :{" "}
+            <input
+              type="number"
+              value={idSalarie}
+              onChange={(e) => setIdSalarie(e.target.value)}
+            />
+          </label>
+          <label>
+            Nom du salarie :{" "}
+            <input
+              type="text"
+              value={nomSalarie}
+              onChange={(e) => setNomSalarie(e.target.value)}
+            />
+          </label>
+          <label>
+            Prénom du salarie :{" "}
+            <input
+              type="text"
+              value={prenomSalarie}
+              onChange={(e) => setPrenomSalarie(e.target.value)}
+            />
+          </label>
+          <label>
+            Telephone fixe du salarie :{" "}
+            <input
+              type="number"
+              value={telephonefixeSalarie}
+              onChange={(e) => setTelephonefixeSalarie(e.target.value)}
+            />
+          </label>
+          <label>
+            Telephone portable du salarie :{" "}
+            <input
+              type="number"
+              value={telephoneportableSalarie}
+              onChange={(e) => setTelephoneportableSalarie(e.target.value)}
+            />
+          </label>
+          <label>
+            Email du salarie :{" "}
+            <input
+              type="text"
+              value={emailSalarie}
+              onChange={(e) => setEmailSalarie(e.target.value)}
+            />
+          </label>
+          <label>
+            Service du salarie :{" "}
+            <input
+              type="number"
+              value={serviceSalarie}
+              onChange={(e) => setServiceSalarie(e.target.value)}
+            />
+          </label>
+          <label>
+            Site du salarie :{" "}
+            <input
+              type="number"
+              value={siteSalarie}
+              onChange={(e) => setSiteSalarie(e.target.value)}
+            />
+          </label>
+
+          <button onClick={handleInsertSalaries}>Ajouter</button>
+        </div>
+      )}
     </div>
   );
 }

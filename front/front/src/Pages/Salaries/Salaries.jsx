@@ -15,6 +15,9 @@ function Salaries() {
   const [siteSalarie, setSiteSalarie] = useState();
   const [showInsertForm, setShowInsertForm] = useState(false);
 
+  const [showUpdateForm, setShowUpdateForm] = useState(false);
+  const [currentSalarie, setCurrentSalarie] = useState({});
+
   useEffect(() => {
     axios.get("http://localhost:8081/GetAllSalaries", {
       headers: {
@@ -68,6 +71,22 @@ function Salaries() {
       });
   };
 
+  const handleUpdateSalaries = (id, updatedSalarie) => {
+    axios.put(`http://localhost:8081/UpdateSalarie/${id}`, { updatedSalarie })
+      .then((response) => {
+        console.log("Salarié mis à jour avec succès !");
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.error("Une erreur s'est produite lors de la mise à jour du salarié : ", error);
+      });
+  };
+
+  const showUpdateFormForSalarie = (salarie) => {
+    setCurrentSalarie(salarie);
+    setShowUpdateForm(true);
+  };
+
   return (
     <div className="container_salarie_div">
       <table>
@@ -94,8 +113,9 @@ function Salaries() {
               <td>{salary.emailSalarie}</td>
               <td>{salary.serviceSalarie}</td>
               <td>{salary.siteSalarie}</td>
-              <td><button onClick={handleForm}>Ajouter</button></td>
-              <td><button onClick={() => handleDeleteSalaries(salary.idSalarie)}>Suprrimer</button></td>
+              <td><button className="crud_button" onClick={handleForm}>Ajouter</button></td>
+              <td><button className="crud_button" onClick={() => showUpdateFormForSalarie(salary)}>Modifier</button></td>
+              <td><button className="crud_button" onClick={() => handleDeleteSalaries(salary.idSalarie)}>Suprrimer</button></td>
             </tr>
           ))}
         </tbody>
@@ -172,6 +192,105 @@ function Salaries() {
           <button onClick={handleInsertSalaries}>Ajouter</button>
         </div>
       )}
+
+      {showUpdateForm && (
+        <div>
+          <h2>Mettre à jour le salarié</h2>
+          <label>
+            ID du salarie : 
+            <input
+              type="number"
+              value={idSalarie}
+              onChange={(e) => setIdSalarie(e.target.value)}
+              defaultValue={currentSalarie.idSalarie}
+              disabled // généralement, l'ID ne devrait pas être modifié
+            />
+          </label>
+
+          <label>
+            Nom du salarie : 
+            <input
+              type="text"
+              value={nomSalarie}
+              onChange={(e) => setNomSalarie(e.target.value)}
+              defaultValue={currentSalarie.nomSalarie}
+            />
+          </label>
+
+          <label>
+            Prénom du salarie : 
+            <input
+              type="text"
+              value={prenomSalarie}
+              onChange={(e) => setPrenomSalarie(e.target.value)}
+              defaultValue={currentSalarie.prenomSalarie}
+            />
+          </label>
+
+          <label>
+            Telephone fixe du salarie : 
+            <input
+              type="number"
+              value={telephonefixeSalarie}
+              onChange={(e) => setTelephonefixeSalarie(e.target.value)}
+              defaultValue={currentSalarie.telephonefixeSalarie}
+            />
+          </label>
+
+          <label>
+            Telephone portable du salarie : 
+            <input
+              type="number"
+              value={telephoneportableSalarie}
+              onChange={(e) => setTelephoneportableSalarie(e.target.value)}
+              defaultValue={currentSalarie.telephoneportableSalarie}
+            />
+          </label>
+
+          <label>
+            Email du salarie : 
+            <input
+              type="text"
+              value={emailSalarie}
+              onChange={(e) => setEmailSalarie(e.target.value)}
+              defaultValue={currentSalarie.emailSalarie}
+            />
+          </label>
+
+          <label>
+            Service du salarie : 
+            <input
+              type="number"
+              value={serviceSalarie}
+              onChange={(e) => setServiceSalarie(e.target.value)}
+              defaultValue={currentSalarie.serviceSalarie}
+            />
+          </label>
+
+          <label>
+            Site du salarie : 
+            <input
+              type="number"
+              value={siteSalarie}
+              onChange={(e) => setSiteSalarie(e.target.value)}
+              defaultValue={currentSalarie.siteSalarie}
+            />
+          </label>
+
+          <button onClick={() => handleUpdateSalaries(currentSalarie.idSalarie, {
+            nomSalarie: nomSalarie,
+            prenomSalarie: prenomSalarie,
+            telephonefixeSalarie: telephonefixeSalarie,
+            telephoneportableSalarie: telephoneportableSalarie,
+            emailSalarie: emailSalarie,
+            serviceSalarie: serviceSalarie,
+            siteSalarie: siteSalarie
+          })}>Mettre à jour</button>
+
+          <button onClick={() => setShowUpdateForm(false)}>Annuler</button>
+        </div>
+      )}
+
     </div>
   );
 }

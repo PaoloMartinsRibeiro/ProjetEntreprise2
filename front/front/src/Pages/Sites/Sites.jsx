@@ -62,7 +62,7 @@ function Sites() {
   
 
   return (
-    <div>
+    <div className="container_site_div">
       <table>
         <thead>
           <tr>
@@ -78,10 +78,10 @@ function Sites() {
               <td>{site.libelleSite}</td>
               <td>{site.villeSite}</td>
               <td>
-                <button onClick={() => handleEdit(site)}>Modifier</button>
+                <button className="crud_button" onClick={() => handleEdit(site)}>Modifier</button>
               </td>
               <td>
-                <button onClick={() => handleDelete(site)}>Supprimer</button>
+                <button className="crud_button" onClick={() => handleDelete(site)}>Supprimer</button>
               </td>
             </tr>
           ))}

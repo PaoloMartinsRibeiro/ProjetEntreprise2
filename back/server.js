@@ -202,6 +202,20 @@ router.delete("/DeleteSalarie/:id", (req, res) => {
     });
   });
 
+router.put("/UpdateSalarie/:id", (req, res) => {
+    const salarieId = req.params.id;
+    const updatedSalarie = req.body.updatedSalarie;
+    const sql = "UPDATE salarie SET nomSalarie = ?, prenomSalarie = ?, telephonefixeSalarie = ?, telephoneportableSalarie = ?, emailSalarie = ?, serviceSalarie = ?, siteSalarie = ? WHERE idSalarie = ?";
+    db.query(sql, [updatedSalarie.nomSalarie, updatedSalarie.prenomSalarie, updatedSalarie.telephonefixeSalarie, updatedSalarie.telephoneportableSalarie, updatedSalarie.emailSalarie, updatedSalarie.serviceSalarie, updatedSalarie.siteSalarie, salarieId], (err, result) => {
+      if (err) {
+        console.error("Erreur lors de la mise à jour du salarié : ", err);
+        return res.status(500).json({ error: "Erreur lors de la mise à jour du salarié" });
+      }
+      console.log("Salarié mis à jour avec succès");
+      return res.json({ message: "Salarié mis à jour avec succès" });
+    });
+  });
+
 app.get('*', router)
 app.post('*', router)
 app.put('*', router)

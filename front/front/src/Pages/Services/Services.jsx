@@ -85,7 +85,7 @@ function Services() {
   };
 
   return (
-    <div>
+    <div className="container_service_div">
       <table>
         <thead>
           <tr>
@@ -98,9 +98,9 @@ function Services() {
             <tr key={service.idService}>
               <td>{service.idService}</td>
               <td>{service.libelleService}</td>
-              <td><button onClick={handleInsertShow}>Ajouter</button></td>
-              <td><button onClick={() => handleEdit(service)}>Modifier</button></td>
-              <td><button onClick={() => handleDelete(service.idService)}>Supprimer</button></td>
+              <td><button className="crud_button" onClick={handleInsertShow}>Ajouter</button></td>
+              <td><button className="crud_button" onClick={() => handleEdit(service)}>Modifier</button></td>
+              <td><button className="crud_button" onClick={() => handleDelete(service.idService)}>Supprimer</button></td>
             </tr>
           ))}
         </tbody>

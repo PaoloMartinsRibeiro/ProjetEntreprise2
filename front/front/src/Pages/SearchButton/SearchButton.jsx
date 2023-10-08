@@ -1,12 +1,11 @@
 import React from "react"
+import "./SearchButton.css"
 
 function SearchButton() {
     return (
-        <div>
-            <button onClick={() => {
+            <button className="search_button" onClick={() => {
                 window.location.href = "/Search"
             }}>Rechercher</button>
-        </div>
     )
 }
 

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Link } from 'react-router-dom'
 import "./Search.css";
 
 function Search() {
@@ -88,6 +89,9 @@ function Search() {
         <option value={5}>Site Occitanie</option>
     </select>
     <button className="form_button" onClick={handleSubmitSite}>Effectuer la recherche par site</button>
+
+    <br />
+    <Link to="/Home">Retour à la page d'accueil</Link>
 
         {searched && (
          <div className="search-results">

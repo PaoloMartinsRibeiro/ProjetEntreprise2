@@ -15,10 +15,6 @@ const db = mysql.createConnection ({
 
 router.post('/login', (req, res) => {
     const sql = 'SELECT * FROM utilisateur WHERE name = ? AND password = ?'
-    const values = [
-        req.body.username,
-        req.body.password
-    ]
     db.query(sql, [ req.body.username, req.body.password], (err, data) => {
         if (err) return res.send("Error")
         if(data.length > 0) {
@@ -103,6 +99,122 @@ router.get('/GetAllSites', (req, res) => {
         }
     });
 })
+
+router.put("/UpdateSite/:id", (req, res) => {
+    const siteId = req.params.idSite;
+    const updatedVille = req.body.villeSite;
+    const sql = "UPDATE site SET villeSite = ? WHERE idSite = ?";
+    db.query(sql, [updatedVille, siteId], (err, result) => {
+      if (err) {
+        console.error("Erreur lors de la mise à jour de la ville : ", err);
+        return res.status(500).json({ error: "Erreur lors de la mise à jour de la ville" });
+      }
+      console.log("Site mis à jour avec succès");
+      return res.json({ message: "Site mis à jour avec succès" });
+    });
+  });
+  
+
+router.delete("/DeleteSite/:id", (req, res) => {
+    const siteId = req.params.id;
+    const sql = "DELETE FROM site WHERE idSite = ?";
+    console.log(req.params.idSite);
+    db.query(sql, [siteId], (err, result) => {
+      if (err) {
+        console.error("Erreur lors de la suppression du site : ", err);
+        return res.status(500).json({ error: "Erreur lors de la suppression du site" });
+      }
+      console.log("Site supprimé avec succès");
+      return res.json({ message: "Site supprimé avec succès" });
+    });
+});
+
+router.post("/CreateService", (req, res) => {
+    const sql = "INSERT INTO service (idService, libelleService) VALUES (?,?)";
+    const idService = req.body.idService;
+    const newService = req.body.libelleService;
+    db.query(sql, [idService, newService], (err, result) => {
+      if (err) {
+        console.error("Erreur lors de la création du service : ", err);
+        return res.status(500).json({ error: "Erreur lors de la création du service" });
+      }
+      console.log("Service créé avec succès");
+      return res.json({ message: "Service créé avec succès" });
+    });
+  }
+);
+
+router.delete("/DeleteService/:id", (req, res) => {
+    const serviceId = req.params.id;
+    const sql = "DELETE FROM service WHERE idService = ?";
+    db.query(sql, [serviceId], (err, result) => {
+      if (err) {
+        console.error("Erreur lors de la suppression du service : ", err);
+        return res.status(500).json({ error: "Erreur lors de la suppression du service" });
+      }
+      return res.json({ message: "Service supprimé avec succès" });
+    });
+  });
+
+router.put("/UpdateService/:id", (req, res) => {
+    const serviceId = req.params.id;
+    const updatedService = req.body.updatedService;
+    const sql = "UPDATE service SET libelleService = ? WHERE idService = ?";
+    db.query(sql, [updatedService, serviceId], (err, result) => {
+      if (err) {
+        console.error("Erreur lors de la mise à jour du service : ", err);
+        return res.status(500).json({ error: "Erreur lors de la mise à jour du service" });
+      }
+      console.log("Service mis à jour avec succès");
+      return res.json({ message: "Service mis à jour avec succès" });
+    });
+  });
+
+  router.post("/CreateSalarie", (req, res) => {
+    const sql = "INSERT INTO salarie (idSalarie, nomSalarie, prenomSalarie, telephonefixeSalarie, telephoneportableSalarie, emailSalarie, serviceSalarie, siteSalarie) VALUES (?,?,?,?,?,?,?,?)";
+    const idSalarie = req.body.idSalarie;
+    const nomSalarie = req.body.nomSalarie;
+    const prenomSalarie = req.body.prenomSalarie;
+    const telFixeSalarie = req.body.telephonefixeSalarie;
+    const telportableSalarie = req.body.telephoneportableSalarie;
+    const emailSalarie = req.body.emailSalarie;
+    const serviceSalarie = req.body.serviceSalarie;
+    const siteSalarie = req.body.siteSalarie;
+    db.query(sql, [idSalarie, nomSalarie, prenomSalarie,telFixeSalarie,telportableSalarie,emailSalarie, serviceSalarie, siteSalarie], (err, result) => {
+      if (err) {
+        console.error("Erreur lors de la création du salarié : ", err);
+        return res.status(500).json({ error: "Erreur lors de la création du salarié" });
+      }
+      console.log("Salarié créé avec succès");
+      return res.json({result});
+    });
+  });
+
+router.delete("/DeleteSalarie/:id", (req, res) => {
+    const salarieId = req.params.id;
+    const sql = "DELETE FROM salarie WHERE idSalarie = ?";
+    db.query(sql, [salarieId], (err, result) => {
+      if (err) {
+        console.error("Erreur lors de la suppression du salarié : ", err);
+        return res.status(500).json({ error: "Erreur lors de la suppression du salarié" });
+      }
+      return res.json({ message: "Salarié supprimé avec succès" });
+    });
+  });
+
+router.put("/UpdateSalarie/:id", (req, res) => {
+    const salarieId = req.params.id;
+    const updatedSalarie = req.body.updatedSalarie;
+    const sql = "UPDATE salarie SET nomSalarie = ?, prenomSalarie = ?, telephonefixeSalarie = ?, telephoneportableSalarie = ?, emailSalarie = ?, serviceSalarie = ?, siteSalarie = ? WHERE idSalarie = ?";
+    db.query(sql, [updatedSalarie.nomSalarie, updatedSalarie.prenomSalarie, updatedSalarie.telephonefixeSalarie, updatedSalarie.telephoneportableSalarie, updatedSalarie.emailSalarie, updatedSalarie.serviceSalarie, updatedSalarie.siteSalarie, salarieId], (err, result) => {
+      if (err) {
+        console.error("Erreur lors de la mise à jour du salarié : ", err);
+        return res.status(500).json({ error: "Erreur lors de la mise à jour du salarié" });
+      }
+      console.log("Salarié mis à jour avec succès");
+      return res.json({ message: "Salarié mis à jour avec succès" });
+    });
+  });
 
 app.get('*', router)
 app.post('*', router)
